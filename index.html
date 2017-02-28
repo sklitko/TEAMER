@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./src/assets/bundle.js"></script>
+    <link rel="stylesheet" href="./src/assets/styles.css">
+</head>
+<body>
+<section id="todoapp">
+    <header id="header"></header>
+    <section id="main"></section>
+    <footer id="footer"></footer>
+</section>
+<div id="mm"></div>
+
+<script id="row-template" type="x-template/lodash">
+        <td><%= title_task %></td>
+</script>
+
+<script id="table" type="x-template/lodash">
+    <table>
+        <thead class="thead-inverse">
+        <tr>
+            <th><a href="#project/<%= id %>"><%= title_project %></a></th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+</script>
+
+<script id="header-template" type="x-template/lodash">
+    <nav class="navbar navbar-light bg-faded">
+        <a class="navbar-brand" href="#">
+            <img src="./src/img/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+            Teamer
+        </a>
+
+        <form class="form-inline">
+            <button id="add" class="btn btn-outline-primary" type="button">Main button</button>
+        </form>
+    </nav>
+</script>
+
+<script>
+    teamer.start();
+</script>
+</body>
+</html>
