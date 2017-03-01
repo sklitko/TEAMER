@@ -1,5 +1,16 @@
-import Mn from "backbone.marionette";
-import BodyView from './BodyView';
+import Mn from "backbone.marionette"
+
+const RowView = Mn.View.extend({
+    tagName: 'tr',
+    template: '#row-template',
+});
+
+
+const BodyView = Mn.CollectionView.extend({
+    tagName: 'tbody',
+    childView: RowView
+});
+
 
 const ProjectView = Mn.View.extend({
 
@@ -25,4 +36,12 @@ const ProjectView = Mn.View.extend({
     }
 });
 
-export default ProjectView;
+const MainView = Mn.CollectionView.extend({
+    tagName: 'div',
+    className: 'container-fluid',
+    childView: ProjectView,
+
+});
+
+export default MainView
+

@@ -1,8 +1,7 @@
 import Backbone from "backbone";
 import Mn from "backbone.marionette";
 import Router from './routers/Router';
-import _ from 'lodash';
-import MyView from './views/MyView';
+import MainView from './views/MainView';
 
 const Task = Backbone.Model.extend({
     defaults: {
@@ -16,7 +15,7 @@ const Task = Backbone.Model.extend({
 const TeamerApp = Mn.Application.extend({
 
     setRootLayout() {
-        this.root = new MyView();
+        this.root = new MainView();
         this.root.render();
     },
 

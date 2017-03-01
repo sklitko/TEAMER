@@ -1,15 +1,14 @@
 import Mn from "backbone.marionette"
 import projects from '../initProjects';
+import Backbone from "backbone";
 import ProjectView from '../views/ProjectView';
-import MainView from '../views/MainView';
-import MyView from '../views/MyView';
 
 
 const Controller = Mn.Object.extend ({
 
     showMain(){
         document.title = `TEAMER`;
-        const myTable = new MainView({
+        const myTable = new ProjectView({
             collection: projects,
         });
 
@@ -23,7 +22,8 @@ const Controller = Mn.Object.extend ({
         const project = projects.get(id);
         console.log(project.toJSON());
         const table = new ProjectView({
-            model: project
+            //model: project
+            collection: new Backbone.Collection(project)
         });
 
         // const myView = new MyView();
