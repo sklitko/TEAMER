@@ -2,9 +2,8 @@
 
 ### How to Start
 
-- open dir. : /
-- start HTTP Server
-- open in browser :  [http://localhost:8080/](http://localhost:8080/)
+- open index.html
+
 
 ### How to install
 
