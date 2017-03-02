@@ -19786,5 +19786,13 @@ a.text-gray-dark:hover {
   float: right !important;
 }
 
+th > a {
+  color: white;
+}
+
+td > a {
+  color: #292b2c;
+}
+
 
 /*# sourceMappingURL=styles.css.map*/

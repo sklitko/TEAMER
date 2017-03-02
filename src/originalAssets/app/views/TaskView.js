@@ -2,7 +2,7 @@ import Mn from "backbone.marionette"
 
 const RowView = Mn.View.extend({
     tagName: 'tr',
-    template: '#row-template',
+    template: '#message-template',
 });
 
 
@@ -16,7 +16,7 @@ const ProjectView = Mn.View.extend({
 
     tagName: 'table',
     className: 'table table-hover project_title',
-    template: '#table',
+    template: '#task-template',
 
     regions: {
         tree: {
@@ -26,22 +26,25 @@ const ProjectView = Mn.View.extend({
     },
 
     onRender() {
-        const tasks = this.model.get('tasks');
-        if (tasks.length) {
+        console.log(this.model.get('messages'));
+        const messages = this.model.get('messages');
+
+        if (messages.length) {
             const treeView = new BodyView({
-                collection: new Backbone.Collection(tasks)
+                collection: new Backbone.Collection(messages)
             });
             this.showChildView('tree', treeView);
         }
     }
 });
 
-const MainView = Mn.CollectionView.extend({
+
+const TaskView = Mn.CollectionView.extend({
     tagName: 'div',
     className: 'container-fluid',
     childView: ProjectView,
 
 });
 
-export default MainView
+export default TaskView
 

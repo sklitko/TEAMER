@@ -7,7 +7,6 @@ const Router = Mn.AppRouter.extend({
         '': 'showMain',
         'project/:id':'showProject',
         'project/:id/task_:id':'showTask',
-
     },
 
 

@@ -2,45 +2,56 @@ import Projects from './models/ProjectCollection'
 
 const projects = new Projects(
     [
-    {
+        {
         id: 1,
-        title_project: 'Первый проект',
+        title: 'Первый проект',
         tasks: [{
             id: 1,
             project_id: 1,
-            title_task: 'Первая таска',
-            completed: 0
-        },
+            title: 'Первая таска',
+            completed: 0,
+            messages: [{
+                id: 1,
+                task_id: 1,
+                text: 'первое сообещине'
+            },
             {
                 id: 2,
-                project_id: 1,
-                title_task: 'Вторая таска',
-                completed: 0
+                task_id: 1,
+                text: 'Второе сообещине'
             }]
+        },
+        {
+            id: 2,
+            project_id: 1,
+            title: 'Вторая таска',
+            completed: 0,
+            messages: []
+        }]
     },
     {
         id: 2,
-        title_project: 'Второй проект',
+        title: 'Второй проект',
         tasks: [{
             id: 3,
             project_id: 2,
-            title_task: 'Третья таска',
+            title: 'Третья таска',
             completed: 0
         },]
     },
     {
         id: 3,
-        title_project: 'Третий проект',
+        title: 'Третий проект',
         tasks: [{
             id: 4,
             project_id: 3,
-            title_task: 'Четвертая таска',
+            title: 'Четвертая таска',
             completed: 0
         }]
     },
         {
             id: 4,
-            title_project: 'Четвертый проект',
+            title: 'Четвертый проект',
             tasks: []
         },
 ]

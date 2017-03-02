@@ -7,7 +7,7 @@ const childView3 = new Mn.View({template: template3});
 
 const header = new HeaderView();
 
-const MyView = Mn.View.extend({
+const MainView = Mn.View.extend({
     el: '#todoapp',
     template: false,
     regions: {
@@ -21,4 +21,4 @@ const MyView = Mn.View.extend({
     }
 });
 
-export default MyView;
+export default MainView;

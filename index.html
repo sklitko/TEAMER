@@ -15,14 +15,15 @@
 <div id="mm"></div>
 
 <script id="row-template" type="x-template/lodash">
-        <td><%= title_task %></td>
+        <td><a href="#project/<%= project_id %>/task_<%= id %>"><%= title %></a></td>
 </script>
+
 
 <script id="table" type="x-template/lodash">
     <table>
         <thead class="thead-inverse">
         <tr>
-            <th><a href="#project/<%= id %>"><%= title_project %></a></th>
+            <th><a href="#project/<%= id %>"><%= title %></a></th>
         </tr>
         </thead>
         <tbody></tbody>
@@ -30,16 +31,38 @@
 
 </script>
 
+<script id="message-template" type="x-template/lodash">
+    <td><%= text %></td>
+</script>
+
+<script id="task-template" type="x-template/lodash">
+
+    <table>
+        <thead class="thead-inverse">
+        <tr>
+            <th><%= title %></th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+</script>
+
+<script id="third-region" type="x-template/lodash">
+    dsfdsf
+</script>
+
 <script id="header-template" type="x-template/lodash">
-    <nav class="navbar navbar-light bg-faded">
+    <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
         <a class="navbar-brand" href="#">
             <img src="./src/img/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">
             Teamer
         </a>
-
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <form class="form-inline">
             <button id="add" class="btn btn-outline-primary" type="button">Main button</button>
         </form>
+        </div>
     </nav>
 </script>
 

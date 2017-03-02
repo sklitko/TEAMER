@@ -63,7 +63,7 @@ var bundle =
 
 	var _Router2 = _interopRequireDefault(_Router);
 
-	var _MainView = __webpack_require__(12);
+	var _MainView = __webpack_require__(13);
 
 	var _MainView2 = _interopRequireDefault(_MainView);
 
@@ -17522,7 +17522,6 @@ var bundle =
 	        '': 'showMain',
 	        'project/:id': 'showProject',
 	        'project/:id/task_:id': 'showTask'
-
 	    }
 
 	});
@@ -17551,16 +17550,24 @@ var bundle =
 
 	var _backbone4 = _interopRequireDefault(_backbone3);
 
-	var _ProjectView = __webpack_require__(11);
+	var _ProjectsView = __webpack_require__(11);
 
-	var _ProjectView2 = _interopRequireDefault(_ProjectView);
+	var _ProjectsView2 = _interopRequireDefault(_ProjectsView);
+
+	var _TaskView = __webpack_require__(12);
+
+	var _TaskView2 = _interopRequireDefault(_TaskView);
+
+	var _lodash = __webpack_require__(14);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var Controller = _backbone2.default.Object.extend({
 	    showMain: function showMain() {
 	        document.title = "TEAMER";
-	        var myTable = new _ProjectView2.default({
+	        var myTable = new _ProjectsView2.default({
 	            collection: _initProjects2.default
 	        });
 
@@ -17572,7 +17579,7 @@ var bundle =
 	    showProject: function showProject(id) {
 	        var project = _initProjects2.default.get(id);
 	        console.log(project.toJSON());
-	        var table = new _ProjectView2.default({
+	        var table = new _ProjectsView2.default({
 	            //model: project
 	            collection: new _backbone4.default.Collection(project)
 	        });
@@ -17583,7 +17590,20 @@ var bundle =
 	        teamer.root.showChildView('main', table);
 	    },
 	    showTask: function showTask(id, task_id) {
-	        console.log(id, task_id);
+	        var project = _initProjects2.default.get(id);
+	        //const coll = new Backbone.Collection(project);
+	        //console.log(id, task_id);
+
+	        var tasks = project.get('tasks');
+	        var task = new _backbone4.default.Collection(tasks);
+	        console.log(project.toJSON());
+	        var table1 = new _TaskView2.default({
+	            //model: project
+	            collection: new _backbone4.default.Collection(task.get(task_id))
+	            //model: task.get(task_id)
+	        });
+
+	        teamer.root.showChildView('main', table1);
 	    }
 	});
 
@@ -17607,39 +17627,49 @@ var bundle =
 
 	var projects = new _ProjectCollection2.default([{
 	    id: 1,
-	    title_project: 'Первый проект',
+	    title: 'Первый проект',
 	    tasks: [{
 	        id: 1,
 	        project_id: 1,
-	        title_task: 'Первая таска',
-	        completed: 0
+	        title: 'Первая таска',
+	        completed: 0,
+	        messages: [{
+	            id: 1,
+	            task_id: 1,
+	            text: 'первое сообещине'
+	        }, {
+	            id: 2,
+	            task_id: 1,
+	            text: 'Второе сообещине'
+	        }]
 	    }, {
 	        id: 2,
 	        project_id: 1,
-	        title_task: 'Вторая таска',
-	        completed: 0
+	        title: 'Вторая таска',
+	        completed: 0,
+	        messages: []
 	    }]
 	}, {
 	    id: 2,
-	    title_project: 'Второй проект',
+	    title: 'Второй проект',
 	    tasks: [{
 	        id: 3,
 	        project_id: 2,
-	        title_task: 'Третья таска',
+	        title: 'Третья таска',
 	        completed: 0
 	    }]
 	}, {
 	    id: 3,
-	    title_project: 'Третий проект',
+	    title: 'Третий проект',
 	    tasks: [{
 	        id: 4,
 	        project_id: 3,
-	        title_task: 'Четвертая таска',
+	        title: 'Четвертая таска',
 	        completed: 0
 	    }]
 	}, {
 	    id: 4,
-	    title_project: 'Четвертый проект',
+	    title: 'Четвертый проект',
 	    tasks: []
 	}]);
 
@@ -17753,14 +17783,14 @@ var bundle =
 	    }
 	});
 
-	var MainView = _backbone2.default.CollectionView.extend({
+	var ProjectsView = _backbone2.default.CollectionView.extend({
 	    tagName: 'div',
 	    className: 'container-fluid',
 	    childView: ProjectView
 
 	});
 
-		exports.default = MainView;
+		exports.default = ProjectsView;
 
 /***/ },
 /* 12 */
@@ -17776,11 +17806,72 @@ var bundle =
 
 	var _backbone2 = _interopRequireDefault(_backbone);
 
-	var _lodash = __webpack_require__(13);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var RowView = _backbone2.default.View.extend({
+	    tagName: 'tr',
+	    template: '#message-template'
+	});
+
+	var BodyView = _backbone2.default.CollectionView.extend({
+	    tagName: 'tbody',
+	    childView: RowView
+	});
+
+	var ProjectView = _backbone2.default.View.extend({
+
+	    tagName: 'table',
+	    className: 'table table-hover project_title',
+	    template: '#task-template',
+
+	    regions: {
+	        tree: {
+	            el: 'tbody',
+	            replaceElement: true
+	        }
+	    },
+
+	    onRender: function onRender() {
+	        console.log(this.model.get('messages'));
+	        var messages = this.model.get('messages');
+
+	        if (messages.length) {
+	            var treeView = new BodyView({
+	                collection: new Backbone.Collection(messages)
+	            });
+	            this.showChildView('tree', treeView);
+	        }
+	    }
+	});
+
+	var TaskView = _backbone2.default.CollectionView.extend({
+	    tagName: 'div',
+	    className: 'container-fluid',
+	    childView: ProjectView
+
+	});
+
+		exports.default = TaskView;
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _backbone = __webpack_require__(4);
+
+	var _backbone2 = _interopRequireDefault(_backbone);
+
+	var _lodash = __webpack_require__(14);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _HeaderView = __webpack_require__(15);
+	var _HeaderView = __webpack_require__(16);
 
 	var _HeaderView2 = _interopRequireDefault(_HeaderView);
 
@@ -17791,7 +17882,7 @@ var bundle =
 
 	var header = new _HeaderView2.default();
 
-	var MyView = _backbone2.default.View.extend({
+	var MainView = _backbone2.default.View.extend({
 	    el: '#todoapp',
 	    template: false,
 	    regions: {
@@ -17805,10 +17896,10 @@ var bundle =
 	    }
 	});
 
-		exports.default = MyView;
+		exports.default = MainView;
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -34896,10 +34987,10 @@ var bundle =
 	  }
 	}.call(this));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(14)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(15)(module)))
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -34915,7 +35006,7 @@ var bundle =
 
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34928,7 +35019,7 @@ var bundle =
 
 	var _backbone2 = _interopRequireDefault(_backbone);
 
-	var _lodash = __webpack_require__(13);
+	var _lodash = __webpack_require__(14);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
