@@ -9,10 +9,11 @@
 <body>
 <section id="todoapp">
     <header id="header"></header>
+    <div id="breadcrumbs"></div>
     <section id="main"></section>
     <footer id="footer"></footer>
 </section>
-<div id="mm"></div>
+
 
 <script id="row-template" type="x-template/lodash">
         <td><a href="#project/<%= project_id %>/task_<%= id %>"><%= title %></a></td>
@@ -36,8 +37,7 @@
 </script>
 
 <script id="task-template" type="x-template/lodash">
-
-    <table>
+    <table class="table table-hover project_title">
         <thead class="thead-inverse">
         <tr>
             <th><%= title %></th>
@@ -45,11 +45,12 @@
         </thead>
         <tbody></tbody>
     </table>
-
 </script>
 
-<script id="third-region" type="x-template/lodash">
-    dsfdsf
+
+
+<script id="link_template" type="x-template/lodash" >
+    <a href="<%= url %>"><%= name %></a> &gt;
 </script>
 
 <script id="header-template" type="x-template/lodash">
@@ -60,7 +61,7 @@
         </a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <form class="form-inline">
-            <button id="add" class="btn btn-outline-primary" type="button">Main button</button>
+            <button id="add" class="btn btn-outline-primary" type="button">ADD</button>
         </form>
         </div>
     </nav>

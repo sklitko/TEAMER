@@ -19794,5 +19794,18 @@ td > a {
   color: #292b2c;
 }
 
+#breadcrumbs {
+  overflow: hidden;
+  margin-bottom: 0;
+  background-color: #eceeef;
+}
+
+.breadcrumb {
+  float: left;
+  border-radius: 0;
+  margin-bottom: 0;
+  padding-right: 0;
+}
+
 
 /*# sourceMappingURL=styles.css.map*/

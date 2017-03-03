@@ -63,7 +63,7 @@ var bundle =
 
 	var _Router2 = _interopRequireDefault(_Router);
 
-	var _MainView = __webpack_require__(13);
+	var _MainView = __webpack_require__(14);
 
 	var _MainView2 = _interopRequireDefault(_MainView);
 
@@ -17558,9 +17558,9 @@ var bundle =
 
 	var _TaskView2 = _interopRequireDefault(_TaskView);
 
-	var _lodash = __webpack_require__(14);
+	var _BreadcrumbCollection = __webpack_require__(13);
 
-	var _lodash2 = _interopRequireDefault(_lodash);
+	var _BreadcrumbCollection2 = _interopRequireDefault(_BreadcrumbCollection);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -17570,38 +17570,29 @@ var bundle =
 	        var myTable = new _ProjectsView2.default({
 	            collection: _initProjects2.default
 	        });
-
-	        // const myView = new MyView();
-	        // myView.render();ddd
-
+	        _BreadcrumbCollection2.default.reset({ name: 'Главная', url: '#' });
 	        teamer.root.showChildView('main', myTable);
 	    },
 	    showProject: function showProject(id) {
 	        var project = _initProjects2.default.get(id);
 	        console.log(project.toJSON());
 	        var table = new _ProjectsView2.default({
-	            //model: project
 	            collection: new _backbone4.default.Collection(project)
 	        });
 
-	        // const myView = new MyView();
-	        // myView.render();
+	        _BreadcrumbCollection2.default.reset([{ name: 'Главная', url: '#' }, { name: project.get('title'), url: '#project/' + id }]);
 
 	        teamer.root.showChildView('main', table);
 	    },
 	    showTask: function showTask(id, task_id) {
 	        var project = _initProjects2.default.get(id);
-	        //const coll = new Backbone.Collection(project);
-	        //console.log(id, task_id);
-
 	        var tasks = project.get('tasks');
 	        var task = new _backbone4.default.Collection(tasks);
-	        console.log(project.toJSON());
 	        var table1 = new _TaskView2.default({
-	            //model: project
-	            collection: new _backbone4.default.Collection(task.get(task_id))
-	            //model: task.get(task_id)
+	            model: task.get(task_id)
 	        });
+
+	        _BreadcrumbCollection2.default.reset([{ name: 'Главная', url: '#' }, { name: project.get('title'), url: '#project/' + id }, { name: task.get(task_id).get('title'), url: '#project/' + id + '/' + 'task_' + task_id }]);
 
 	        teamer.root.showChildView('main', table1);
 	    }
@@ -17818,10 +17809,10 @@ var bundle =
 	    childView: RowView
 	});
 
-	var ProjectView = _backbone2.default.View.extend({
+	var TaskView = _backbone2.default.View.extend({
 
-	    tagName: 'table',
-	    className: 'table table-hover project_title',
+	    tagName: 'div',
+	    className: 'container-fluid',
 	    template: '#task-template',
 
 	    regions: {
@@ -17844,17 +17835,30 @@ var bundle =
 	    }
 	});
 
-	var TaskView = _backbone2.default.CollectionView.extend({
-	    tagName: 'div',
-	    className: 'container-fluid',
-	    childView: ProjectView
-
-	});
-
 		exports.default = TaskView;
 
 /***/ },
 /* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _backbone = __webpack_require__(1);
+
+	var _backbone2 = _interopRequireDefault(_backbone);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var breadcrumbCollection = new _backbone2.default.Collection([{ name: 'home', url: '#' }]);
+
+	exports.default = breadcrumbCollection;
+
+/***/ },
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17867,13 +17871,21 @@ var bundle =
 
 	var _backbone2 = _interopRequireDefault(_backbone);
 
-	var _lodash = __webpack_require__(14);
+	var _lodash = __webpack_require__(15);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _HeaderView = __webpack_require__(16);
+	var _HeaderView = __webpack_require__(17);
 
 	var _HeaderView2 = _interopRequireDefault(_HeaderView);
+
+	var _BreadcrumbView = __webpack_require__(18);
+
+	var _BreadcrumbView2 = _interopRequireDefault(_BreadcrumbView);
+
+	var _BreadcrumbCollection = __webpack_require__(13);
+
+	var _BreadcrumbCollection2 = _interopRequireDefault(_BreadcrumbCollection);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -17882,16 +17894,22 @@ var bundle =
 
 	var header = new _HeaderView2.default();
 
+	var breadcrumbView = new _BreadcrumbView2.default({
+	    collection: _BreadcrumbCollection2.default
+	});
+
 	var MainView = _backbone2.default.View.extend({
 	    el: '#todoapp',
 	    template: false,
 	    regions: {
 	        header: '#header',
+	        breadcrumbs: '#breadcrumbs',
 	        main: '#main',
 	        footer: '#footer'
 	    },
 	    onRender: function onRender() {
 	        this.showChildView('header', header);
+	        this.showChildView('breadcrumbs', breadcrumbView);
 	        this.showChildView('footer', childView3);
 	    }
 	});
@@ -17899,7 +17917,7 @@ var bundle =
 		exports.default = MainView;
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -34987,10 +35005,10 @@ var bundle =
 	  }
 	}.call(this));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(15)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(16)(module)))
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -35006,7 +35024,7 @@ var bundle =
 
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35019,7 +35037,7 @@ var bundle =
 
 	var _backbone2 = _interopRequireDefault(_backbone);
 
-	var _lodash = __webpack_require__(14);
+	var _lodash = __webpack_require__(15);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -35039,6 +35057,37 @@ var bundle =
 	});
 
 		exports.default = HeaderView;
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _backbone = __webpack_require__(4);
+
+	var _backbone2 = _interopRequireDefault(_backbone);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var BreadcrumbView = _backbone2.default.View.extend({
+	    template: '#link_template',
+	    className: 'breadcrumb'
+	});
+
+	var BreadcrumbListView = _backbone2.default.CollectionView.extend({
+	    initialize: function initialize() {
+	        this.listenTo(this.collection, 'change', this.render);
+	    },
+
+	    childView: BreadcrumbView
+	});
+
+		exports.default = BreadcrumbListView;
 
 /***/ }
 /******/ ]);

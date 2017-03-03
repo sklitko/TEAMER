@@ -12,10 +12,10 @@ const BodyView = Mn.CollectionView.extend({
 });
 
 
-const ProjectView = Mn.View.extend({
+const TaskView = Mn.View.extend({
 
-    tagName: 'table',
-    className: 'table table-hover project_title',
+    tagName: 'div',
+    className: 'container-fluid',
     template: '#task-template',
 
     regions: {
@@ -38,13 +38,6 @@ const ProjectView = Mn.View.extend({
     }
 });
 
-
-const TaskView = Mn.CollectionView.extend({
-    tagName: 'div',
-    className: 'container-fluid',
-    childView: ProjectView,
-
-});
 
 export default TaskView
 

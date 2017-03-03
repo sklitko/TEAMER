@@ -3,7 +3,8 @@ import projects from '../initProjects';
 import Backbone from "backbone";
 import ProjectsView from '../views/ProjectsView';
 import TaskView from '../views/TaskView';
-import _ from 'lodash';
+import breadcrumbCollection from '../models/BreadcrumbCollection';
+
 
 
 const Controller = Mn.Object.extend ({
@@ -13,10 +14,7 @@ const Controller = Mn.Object.extend ({
         const myTable = new ProjectsView({
             collection: projects,
         });
-
-        // const myView = new MyView();
-        // myView.render();ddd
-
+        breadcrumbCollection.reset({ name : 'Главная', url : '#' });
         teamer.root.showChildView('main', myTable);
 
     },
@@ -24,12 +22,10 @@ const Controller = Mn.Object.extend ({
         const project = projects.get(id);
         console.log(project.toJSON());
         const table = new ProjectsView({
-            //model: project
             collection: new Backbone.Collection(project)
         });
 
-        // const myView = new MyView();
-        // myView.render();
+        breadcrumbCollection.reset([{ name : 'Главная', url : '#' },{name: project.get('title'), url: '#project/'+id}]);
 
         teamer.root.showChildView('main', table);
 
@@ -37,17 +33,13 @@ const Controller = Mn.Object.extend ({
 
     showTask(id, task_id) {
         const project = projects.get(id);
-        //const coll = new Backbone.Collection(project);
-        //console.log(id, task_id);
-
         const tasks = project.get('tasks');
         const task = new Backbone.Collection(tasks);
-        console.log(project.toJSON());
-            const table1 = new TaskView({
-            //model: project
-            collection: new Backbone.Collection(task.get(task_id))
-            //model: task.get(task_id)
+        const table1 = new TaskView({
+            model: task.get(task_id)
         });
+
+        breadcrumbCollection.reset([{ name : 'Главная', url : '#' },{name: project.get('title'), url: '#project/'+id},{name: task.get(task_id).get('title'), url: '#project/'+id+'/'+'task_'+task_id}]);
 
         teamer.root.showChildView('main', table1);
 
