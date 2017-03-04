@@ -4,8 +4,8 @@ import HeaderView from './HeaderView'
 import BreadcrumbListView from './BreadcrumbView'
 import breadcrumbCollection from '../models/BreadcrumbCollection';
 
-const template3 = _.template('FOOTER');
-const childView3 = new Mn.View({template: template3});
+const template_footer = _.template('FOOTER');
+const footer = new Mn.View({template: template_footer});
 
 const header = new HeaderView();
 
@@ -28,7 +28,7 @@ const MainView = Mn.View.extend({
     onRender() {
         this.showChildView('header', header);
         this.showChildView('breadcrumbs', breadcrumbView);
-        this.showChildView('footer', childView3);
+        this.showChildView('footer', footer);
     }
 });
 

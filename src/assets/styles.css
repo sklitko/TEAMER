@@ -19807,5 +19807,14 @@ td > a {
   padding-right: 0;
 }
 
+th > button {
+  float: right;
+  display: none !important;
+}
+
+th:hover > button {
+  display: block !important;
+}
+
 
 /*# sourceMappingURL=styles.css.map*/

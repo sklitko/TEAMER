@@ -17756,6 +17756,18 @@ var bundle =
 	    className: 'table table-hover project_title',
 	    template: '#table',
 
+	    ui: {
+	        delete: '#delete_project'
+	    },
+	    events: {
+	        'click @ui.delete': 'onDeleteProject'
+	    },
+	    onDeleteProject: function onDeleteProject() {
+	        //console.log(this.model.toJSON())
+	        //console.log(this.collection)
+	    },
+
+
 	    regions: {
 	        tree: {
 	            el: 'tbody',
@@ -17777,6 +17789,7 @@ var bundle =
 	var ProjectsView = _backbone2.default.CollectionView.extend({
 	    tagName: 'div',
 	    className: 'container-fluid',
+
 	    childView: ProjectView
 
 	});
@@ -17889,8 +17902,8 @@ var bundle =
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var template3 = _lodash2.default.template('FOOTER');
-	var childView3 = new _backbone2.default.View({ template: template3 });
+	var template_footer = _lodash2.default.template('FOOTER');
+	var footer = new _backbone2.default.View({ template: template_footer });
 
 	var header = new _HeaderView2.default();
 
@@ -17910,7 +17923,7 @@ var bundle =
 	    onRender: function onRender() {
 	        this.showChildView('header', header);
 	        this.showChildView('breadcrumbs', breadcrumbView);
-	        this.showChildView('footer', childView3);
+	        this.showChildView('footer', footer);
 	    }
 	});
 
