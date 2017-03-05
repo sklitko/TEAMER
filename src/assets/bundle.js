@@ -86,8 +86,8 @@ var bundle =
 	    onStart: function onStart() {
 
 	        this.setRootLayout();
-	        var router = new _Router2.default();
-	        _backbone2.default.history.start();
+	        //const router = new Router();
+	        //Backbone.history.start();
 	    }
 	});
 
@@ -17567,11 +17567,11 @@ var bundle =
 	var Controller = _backbone2.default.Object.extend({
 	    showMain: function showMain() {
 	        document.title = "TEAMER";
-	        var myTable = new _ProjectsView2.default({
-	            collection: _initProjects2.default
-	        });
+	        // const myTable = new ProjectsView({
+	        //     collection: projects,
+	        // });
 	        _BreadcrumbCollection2.default.reset({ name: 'Главная', url: '#' });
-	        teamer.root.showChildView('main', myTable);
+	        //teamer.root.showChildView('main', myTable);
 	    },
 	    showProject: function showProject(id) {
 	        var project = _initProjects2.default.get(id);
@@ -17742,12 +17742,25 @@ var bundle =
 
 	var RowView = _backbone2.default.View.extend({
 	    tagName: 'tr',
-	    template: '#row-template'
+	    template: '#row-template',
+
+	    events: {
+	        'click td': 'showTask'
+	    },
+
+	    showTask: function showTask(e) {
+	        e.stopPropagation();
+	        this.triggerMethod('show:task', this.model);
+	    }
 	});
 
 	var BodyView = _backbone2.default.CollectionView.extend({
 	    tagName: 'tbody',
-	    childView: RowView
+	    childView: RowView,
+	    childViewTriggers: {
+	        'show:task': 'child:show:task'
+	    }
+
 	});
 
 	var ProjectView = _backbone2.default.View.extend({
@@ -17757,14 +17770,24 @@ var bundle =
 	    template: '#table',
 
 	    ui: {
-	        delete: '#delete_project'
+	        delete: '#delete_project',
+	        showProject: 'th'
 	    },
 	    events: {
-	        'click @ui.delete': 'onDeleteProject'
+	        'click @ui.delete': 'deleteProject',
+	        'click @ui.showProject': 'showProject'
+
 	    },
-	    onDeleteProject: function onDeleteProject() {
-	        //console.log(this.model.toJSON())
-	        //console.log(this.collection)
+
+	    showProject: function showProject(e) {
+	        e.stopPropagation();
+	        //e.preventDefault();
+	        this.triggerMethod('showProject', this.model);
+	    },
+	    deleteProject: function deleteProject(e) {
+	        //e.preventDefault();
+	        e.stopPropagation();
+	        this.triggerMethod('event:delete', this.model);
 	    },
 
 
@@ -17783,15 +17806,22 @@ var bundle =
 	            });
 	            this.showChildView('tree', treeView);
 	        }
+	    },
+
+
+	    childViewEvents: {
+	        'child:show:task': 'showTask'
+	    },
+
+	    showTask: function showTask(model) {
+	        this.triggerMethod('showTask', model);
 	    }
 	});
 
 	var ProjectsView = _backbone2.default.CollectionView.extend({
 	    tagName: 'div',
 	    className: 'container-fluid',
-
 	    childView: ProjectView
-
 	});
 
 		exports.default = ProjectsView;
@@ -17900,6 +17930,10 @@ var bundle =
 
 	var _BreadcrumbCollection2 = _interopRequireDefault(_BreadcrumbCollection);
 
+	var _ProjectView = __webpack_require__(19);
+
+	var _ProjectView2 = _interopRequireDefault(_ProjectView);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var template_footer = _lodash2.default.template('FOOTER');
@@ -17910,6 +17944,8 @@ var bundle =
 	var breadcrumbView = new _BreadcrumbView2.default({
 	    collection: _BreadcrumbCollection2.default
 	});
+
+	//const t = new TableView();
 
 	var MainView = _backbone2.default.View.extend({
 	    el: '#todoapp',
@@ -17923,6 +17959,7 @@ var bundle =
 	    onRender: function onRender() {
 	        this.showChildView('header', header);
 	        this.showChildView('breadcrumbs', breadcrumbView);
+	        this.showChildView('main', new _ProjectView2.default());
 	        this.showChildView('footer', footer);
 	    }
 	});
@@ -35101,6 +35138,113 @@ var bundle =
 	});
 
 		exports.default = BreadcrumbListView;
+
+/***/ },
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _backbone = __webpack_require__(4);
+
+	var _backbone2 = _interopRequireDefault(_backbone);
+
+	var _ProjectsView = __webpack_require__(11);
+
+	var _ProjectsView2 = _interopRequireDefault(_ProjectsView);
+
+	var _TaskView = __webpack_require__(12);
+
+	var _TaskView2 = _interopRequireDefault(_TaskView);
+
+	var _initProjects = __webpack_require__(8);
+
+	var _initProjects2 = _interopRequireDefault(_initProjects);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var TableModel = Backbone.Model.extend({
+	    defaults: {
+	        view: 'projects'
+	    }
+	});
+
+	var TableView = _backbone2.default.View.extend({
+	    //radio:
+
+	    initialize: function initialize() {
+	        this.projects = _initProjects2.default;
+	    },
+
+
+	    model: new TableModel(),
+
+	    template: '#mm',
+	    regions: {
+	        main: '#first-region'
+	    },
+
+	    onShowProject: function onShowProject(e) {
+	        this.projects = e;
+
+	        this.model.set({ view: 'project' });
+	    },
+	    onShowTask: function onShowTask(e) {
+	        this.projects = e;
+	        this.model.set({ view: 'task' });
+	    },
+	    onDeleteProject: function onDeleteProject(e) {
+	        this.projects.remove(e);
+	        this.model.set({ view: 'projects' });
+	    },
+	    onRender: function onRender() {
+	        this.showChild();
+	        this.listenTo(this.model, 'change', this.showChild);
+	    },
+	    showChild: function showChild() {
+	        var view = this.model.get('view');
+
+	        //        console.log(view);
+	        if (view == 'projects') {
+	            this.showProjects();
+	        } else if (view == 'project') {
+	            this.showProject();
+	        } else if (view == 'task') {
+	            this.showTask();
+	        }
+	    },
+	    showProjects: function showProjects() {
+	        this.view = new _ProjectsView2.default({
+	            collection: this.projects
+	        });
+
+	        this.showView();
+	    },
+	    showProject: function showProject() {
+	        this.view = new _ProjectsView2.default({
+	            collection: new Backbone.Collection(this.projects)
+	        });
+	        this.showView();
+	    },
+	    showTask: function showTask() {
+	        this.view = new _TaskView2.default({
+	            model: this.projects
+	        });
+	        this.showView();
+	    },
+	    showView: function showView() {
+	        this.showChildView('main', this.view);
+	        this.listenTo(this.view, 'childview:showProject', this.onShowProject);
+	        this.listenTo(this.view, 'childview:showTask', this.onShowTask);
+	        this.listenTo(this.view, 'childview:event:delete', this.onDeleteProject);
+	    }
+	});
+
+		exports.default = TableView;
 
 /***/ }
 /******/ ]);

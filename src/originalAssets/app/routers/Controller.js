@@ -11,11 +11,11 @@ const Controller = Mn.Object.extend ({
 
     showMain(){
         document.title = `TEAMER`;
-        const myTable = new ProjectsView({
-            collection: projects,
-        });
+        // const myTable = new ProjectsView({
+        //     collection: projects,
+        // });
         breadcrumbCollection.reset({ name : 'Главная', url : '#' });
-        teamer.root.showChildView('main', myTable);
+        //teamer.root.showChildView('main', myTable);
 
     },
     showProject(id) {

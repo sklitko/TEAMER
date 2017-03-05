@@ -10,9 +10,16 @@
 <section id="todoapp">
     <header id="header"></header>
     <div id="breadcrumbs"></div>
-    <section id="main"></section>
+    <section id="main">
+
+    </section>
     <footer id="footer"></footer>
 </section>
+
+
+<div id="mm" type="x-template/lodash">
+    <div id="first-region"></div>
+</div>
 
 
 <script id="row-template" type="x-template/lodash">
@@ -24,7 +31,7 @@
     <table>
         <thead class="thead-inverse">
         <tr>
-            <th><a href="#project/<%= id %>"><%= title %></a><button id="delete_project" class="btn btn-primary btn-sm" type="button">delete</button></th>
+            <th><%= title %></a><button id="delete_project" class="btn btn-primary btn-sm" type="button">delete</button></th>
 
         </tr>
         </thead>

@@ -23,8 +23,8 @@ const TeamerApp = Mn.Application.extend({
 
 
         this.setRootLayout();
-        const router = new Router();
-        Backbone.history.start();
+        //const router = new Router();
+        //Backbone.history.start();
     }
 });
 
